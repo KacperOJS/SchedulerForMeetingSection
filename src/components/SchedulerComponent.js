@@ -20,12 +20,9 @@ import {collection,addDoc,updateDoc,deleteDoc,onSnapshot,doc,} from "firebase/fi
 
 
 const SchedulerComponent = () => {
-  const [addedAppointment, setAddedAppointment] = useState({});
-  const [editingAppointment, setEditingAppointment] = useState(undefined);
   const [appointments, setAppointments] = useState([]);
-
+  
   const DataContext = collection(db, "appointments");
-
 
   const convertTimestampToDate = (timestamp) => {
 	return new Date(timestamp.seconds * 1000);
@@ -45,7 +42,6 @@ const SchedulerComponent = () => {
 			  allDay: data.allDay || false,
 			};
 		  });
-        // console.log("Fetched Appointments:", fetchedAppointments);
         setAppointments(fetchedAppointments);
       },
       (error) => {
@@ -109,14 +105,7 @@ const SchedulerComponent = () => {
   return (
     <Scheduler data={memoizedAppointments} locale="pl-PL">
       <ViewState />
-      <EditingState
-        onCommitChanges={EditingStateChanges}
-        addedAppointment={addedAppointment}
-        onAddedAppointmentChange={setAddedAppointment}
-        editingAppointment={editingAppointment}
-        onEditingAppointmentChange={(appointment) => setEditingAppointment(appointment)
-        }
-      />
+      <EditingState onCommitChanges={EditingStateChanges} />
 
       <MonthView startDayHour={6} endDayHour={18} />
       <DayView startDayHour={6} endDayHour={18} />
